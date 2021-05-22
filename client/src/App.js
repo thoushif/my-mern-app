@@ -1,43 +1,41 @@
-import {useState, useEffect} from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+// import logo from "./logo.svg";
+import "./App.css";
 import axios from "axios";
 
 function App() {
   const [movies, setMovies] = useState([
     {
-      title: '',
-      genre: '',
-      year: ''
+      title: "",
+      genre: "",
+      year: ""
     }
-  ])
+  ]);
 
-  const [movie, setMovie] = useState(
-    {
-      title: '',
-      genre: '',
-      year: ''
-    }
-  )
+  const [movie, setMovie] = useState({
+    title: "",
+    genre: "",
+    year: ""
+  });
 
   useEffect(() => {
-    fetch('/movies').then(res => {
-      if(res.ok) {
-        return res.json()
-      }
-    }).then(jsonRes => setMovies(jsonRes))
-  })
+    fetch("/movies")
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((jsonRes) => setMovies(jsonRes));
+  });
 
   function handleChange(e) {
-    const {name, value} = e.target;
-    setMovie(prevInput => {
-      return(
-        {
-          ...prevInput,
-          [name]: value
-        }
-      )
-    })
+    const { name, value } = e.target;
+    setMovie((prevInput) => {
+      return {
+        ...prevInput,
+        [name]: value
+      };
+    });
   }
 
   function addMovie(e) {
@@ -47,13 +45,13 @@ function App() {
       title: movie.title,
       genre: movie.genre,
       year: movie.year
-    }
-
-    axios.post('/newmovie', newMovie);
+    };
+    console.log("going to server for postingggggggggg");
+    axios.post("/newmovie", newMovie);
   }
 
   function deleteMovie(id) {
-    axios.delete('/delete/' + id);
+    axios.delete("/delete/" + id);
     alert("movie deleted");
   }
 
@@ -67,15 +65,15 @@ function App() {
         <button onClick={addMovie}>ADD MOVIE</button>
       </form>
 
-      {movies.map(movie => {
+      {movies.map((movie) => {
         return (
-          <div>
+          <div key={movie._id}>
             <h1>{movie.title}</h1>
             <p>{movie.genre}</p>
             <p>{movie.year}</p>
             <button onClick={() => deleteMovie(movie._id)}>DELETE</button>
           </div>
-        ) 
+        );
       })}
     </div>
   );
